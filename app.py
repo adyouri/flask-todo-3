@@ -26,3 +26,28 @@ def index():
 
     conn.close()
     return render_template('index.html', lists=lists)
+
+@app.route('/create/', methods=('GET', 'POST'))
+def create():
+    conn = get_db_connection()
+
+    if request.method == 'POST':
+        content = request.form['content']
+        list_title = request.form['list']
+
+        if not content:
+            flash('Content is required!')
+            return redirect(url_for('index'))
+
+        list_id = conn.execute('SELECT id FROM lists WHERE title = (?);',
+                                 (list_title,)).fetchone()['id']
+        conn.execute('INSERT INTO items (content, list_id) VALUES (?, ?)',
+                     (content, list_id))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('index'))
+
+    lists = conn.execute('SELECT title FROM lists;').fetchall()
+
+    conn.close()
+    return render_template('create.html', lists=lists)
