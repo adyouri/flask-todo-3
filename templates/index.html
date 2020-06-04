@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Welcome to FlaskTodo {% endblock %}</h1>
+    {% for list, items in lists.items() %}
+        <div class="card" style="width: 18rem; margin-bottom: 50px;">
+            <div class="card-header">
+                <h3>{{ list }}</h3>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for item in items %}
+                    <li class="list-group-item">{{ item['content'] }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+{% endblock %}
