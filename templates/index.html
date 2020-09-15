@@ -9,7 +9,30 @@
             </div>
             <ul class="list-group list-group-flush">
                 {% for item in items %}
-                    <li class="list-group-item">{{ item['content'] }}</li>
+                    <li class="list-group-item"
+                    {% if item['done'] %}
+                    style="text-decoration: line-through;"
+                    {% endif %}
+                    >{{ item['content'] }}
+                    {% if not item ['done'] %}
+                        {% set URL = 'do' %}
+                        {% set BUTTON = 'Do' %}
+                    {% else %}
+                        {% set URL = 'undo' %}
+                        {% set BUTTON = 'Undo' %}
+                    {% endif %}
+
+
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <form action="{{ url_for(URL, id=item['id']) }}"
+                                method="POST">
+                                <input type="submit" value="{{ BUTTON }}"
+                                    class="btn btn-success btn-sm">
+                            </form>
+                        </div>
+                    </div>
+                    </li>
                 {% endfor %}
             </ul>
         </div>

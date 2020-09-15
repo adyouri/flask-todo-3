@@ -12,5 +12,6 @@ CREATE TABLE items (
     list_id INTEGER NOT NULL,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     content TEXT NOT NULL,
+    done INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (list_id) REFERENCES lists (id)
 );

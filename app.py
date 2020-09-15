@@ -16,7 +16,8 @@ app.config['SECRET_KEY'] = 'this should be a secret random string'
 @app.route('/')
 def index():
     conn = get_db_connection()
-    todos = conn.execute('SELECT i.content, l.title FROM items i JOIN lists l \
+    todos = conn.execute('SELECT i.id, i.done, i.content, l.title \
+                          FROM items i JOIN lists l \
                           ON i.list_id = l.id ORDER BY l.title;').fetchall()
 
     lists = {}
@@ -51,3 +52,20 @@ def create():
 
     conn.close()
     return render_template('create.html', lists=lists)
+
+@app.route('/<int:id>/do/', methods=('POST',))
+def do(id):
+    conn = get_db_connection()
+    conn.execute('UPDATE items SET done = 1 WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('index'))
+
+
+@app.route('/<int:id>/undo/', methods=('POST',))
+def undo(id):
+    conn = get_db_connection()
+    conn.execute('UPDATE items SET done = 0 WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('index'))
