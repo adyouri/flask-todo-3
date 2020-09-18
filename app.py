@@ -69,3 +69,34 @@ def undo(id):
     conn.commit()
     conn.close()
     return redirect(url_for('index'))
+
+
+@app.route('/<int:id>/edit/', methods=('GET', 'POST'))
+def edit(id):
+    conn = get_db_connection()
+
+    todo = conn.execute('SELECT i.id, i.list_id, i.done, i.content, l.title \
+                         FROM items i JOIN lists l \
+                         ON i.list_id = l.id WHERE i.id = ?', (id,)).fetchone()
+
+    lists = conn.execute('SELECT title FROM lists;').fetchall()
+
+    if request.method == 'POST':
+        content = request.form['content']
+        list_title = request.form['list']
+
+        if not content:
+            flash('Content is required!')
+            return redirect(url_for('edit', id=id))
+
+        list_id = conn.execute('SELECT id FROM lists WHERE title = (?);',
+                                 (list_title,)).fetchone()['id']
+
+        conn.execute('UPDATE items SET content = ?, list_id = ?\
+                      WHERE id = ?',
+                     (content, list_id, id))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('index'))
+
+    return render_template('edit.html', todo=todo, lists=lists)

@@ -31,6 +31,10 @@
                                     class="btn btn-success btn-sm">
                             </form>
                         </div>
+                        <div class="col-12 col-md-3">
+                            <a class="btn btn-warning btn-sm"
+                            href="{{ url_for('edit', id=item['id']) }}">Edit</a>
+                        </div>
                     </div>
                     </li>
                 {% endfor %}
