@@ -35,6 +35,15 @@ def create():
     if request.method == 'POST':
         content = request.form['content']
         list_title = request.form['list']
+        new_list = request.form['new_list']
+
+        # If a new list title is submitted, add it to the database
+        if list_title == 'New List' and new_list:
+            conn.execute('INSERT INTO lists (title) VALUES (?)',
+                         (new_list,))
+            conn.commit()
+            # Update list_title to refer to the newly added list
+            list_title = new_list
 
         if not content:
             flash('Content is required!')

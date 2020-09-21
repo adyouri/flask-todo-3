@@ -14,6 +14,7 @@
     <div class="form-group">
         <label for="list">List</label>
         <select class="form-control" name="list">
+            <option value="New List" selected>New List</option>
             {% for list in lists %}
                 {% if list['title'] == request.form['list'] %}
                     <option value="{{ request.form['list'] }}" selected>
@@ -27,6 +28,13 @@
             {% endfor %}
         </select>
     </div>
+    <div class="form-group">
+        <label for="new_list">New List</label>
+        <input type="text" name="new_list"
+                placeholder="New list name" class="form-control"
+                value="{{ request.form['new_list'] }}"></input>
+    </div>
+
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
