@@ -100,3 +100,11 @@ def edit(id):
         return redirect(url_for('index'))
 
     return render_template('edit.html', todo=todo, lists=lists)
+
+@app.route('/<int:id>/delete/', methods=('POST',))
+def delete(id):
+    conn = get_db_connection()
+    conn.execute('DELETE FROM items WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('index'))
