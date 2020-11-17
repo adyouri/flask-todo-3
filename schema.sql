@@ -1,5 +1,7 @@
+DROP TABLE IF EXISTS assignees;
 DROP TABLE IF EXISTS lists;
 DROP TABLE IF EXISTS items;
+DROP TABLE IF EXISTS item_assignees;
 
 CREATE TABLE lists (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -14,4 +16,17 @@ CREATE TABLE items (
     content TEXT NOT NULL,
     done INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (list_id) REFERENCES lists (id)
+);
+
+CREATE TABLE assignees (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+);
+
+CREATE TABLE item_assignees (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    item_id INTEGER,
+    assignee_id INTEGER,
+    FOREIGN KEY(item_id) REFERENCES items(id),
+    FOREIGN KEY(assignee_id) REFERENCES assignees(id)
 );

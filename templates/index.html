@@ -45,6 +45,17 @@
                             </form>
                         </div>
                     </div>
+
+                    <hr>
+                    {% if item['assignees'] %}
+                        <span style="color: #6a6a6a">Assigned to</span>
+                        {% for assignee in item['assignees'] %}
+                            <span class="badge badge-primary">
+                                {{ assignee['name'] }}
+                            </span>
+                        {% endfor %}
+                    {% endif %}
+
                     </li>
                 {% endfor %}
             </ul>
